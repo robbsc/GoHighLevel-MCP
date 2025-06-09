@@ -405,7 +405,9 @@ class GHLMCPHttpServer {
     // Tool execution endpoint for external systems like n8n
 this.app.post('/run', async (req, res) => {
   try {
-    const { name, arguments: args } = req.body.params;
+    const name = req.body?.params?.name;
+    const args = req.body?.params?.arguments || {};
+
 
     console.log(`[GHL MCP HTTP] [/run] Executing tool: ${name}`);
 
