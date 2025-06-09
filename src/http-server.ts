@@ -3,6 +3,7 @@
  * HTTP version for ChatGPT web integration
  */
 
+import toolsRouter from './api/routes/tools';
 import express from 'express';
 import cors from 'cors';
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
