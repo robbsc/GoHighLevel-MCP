@@ -402,6 +402,17 @@ class GHLMCPHttpServer {
         documentation: 'https://github.com/your-repo/ghl-mcp-server'
       });
     });
+        // Tool execution endpoint for external systems like n8n
+    this.app.post('/run', async (req, res) => {
+      try {
+        const result = await this.server.handleRequest(req.body);
+        res.json(result);
+      } catch (error) {
+        console.error('[GHL MCP HTTP] /run error:', error);
+        res.status(500).json({ error: 'Failed to execute tool' });
+      }
+    });
+
   }
 
   /**
