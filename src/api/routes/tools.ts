@@ -1,17 +1,24 @@
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
 import { OpenAI } from 'openai';
 
 const router = Router();
+
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
+  apiKey: process.env.OPENAI_API_KEY || '',
 });
 
-router.post('/run', async (req, res) => {
+router.post('/run', async (req: Request, res: Response): Promise<void> => {
   try {
     const { tool, input } = req.body;
 
     if (tool !== 'chat-completion') {
-      return res.status(400).json({ error: 'Unsupported tool' });
+      res.status(400).json({ error: 'Unsupported tool' });
+      return;
+    }
+
+    if (!input || !input.messages) {
+      res.status(400).json({ error: 'Missing input messages' });
+      return;
     }
 
     const response = await openai.chat.completions.create({
